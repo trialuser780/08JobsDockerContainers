@@ -11,19 +11,21 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
-    container: node:16 #image to use #to run your jobs on custom container define the following keyword
+    #container: node:16 #image to use #to run your jobs on custom container define the following keyword
       #image: node:16 #mcr.microsoft.com/playwright:v1.25.0-focal
       #The commented way of calling is used if we have to pass further information. like the environment variables
       #env: 
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb #mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: mongodb #ServiceName(mongodb) #Name of the services defined below mongodb -> it create direct connection #OnAtlas cluster0.ntrwp.mongodb.net
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017  #If contianer is not running and only services
       MONGODB_USERNAME: root #As meniod below #on Atlae: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: example #On atlas${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     services: #TO run services(belog to a job) in a created container this is the proces and keyword. Service connection can also run without contianer defined.
       mongodb: #here name has to be aidentifier
         image: mongo #here we add service specific keys
+        ports:
+          - 27017:27017
         env: 
           MONGO_INITDB_ROOT_USERNAME: root #based on docker mongodb image
           MONGO_INITDB_ROOT_PASSWORD: example      
